@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>flask doc</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #mybtn{
+            padding: 20px 40px;
+            outline: none;
+            border: none;
+            border-radius: 10px;
+            background-color: rgb(255, 78, 78);
+            font-size: 18px;
+            cursor: pointer;
+
+        }
+        html,body{
+            height: 100vh;
+            width: 100vw;
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button id="mybtn">Click Me</button>
+    <script>
+        const btn = document.querySelector('#mybtn')
+        btn.addEventListener('click', () => {
+
+            /*data = await fetch('http://127.0.0.1:5000/data')
+            json = await data.json()
+            console.log(json) */
+
+            fetch('http://127.0.0.1:5000/data')
+                .then(res => res.json())         // Parses the JSON response from the server
+                .then(data => console.log(data)) // Logs the data to the console
+                .catch(e => console.log(e));
+        })
+    </script>
+</body>
+
+</html>

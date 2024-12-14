@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>registration</title>
+</head>
+<body>
+    <h1>Registration for New User</h1>
+    <form action="{{url_for('reg')}}" method="POST">
+        <input type="text" placeholder="Enter your name" name="name">
+        <input type="mail" placeholder="Enter your mail" name="mail">
+        <input type="password" placeholder="password" name="password">
+        <input type="password" placeholder="confirm password">
+        <input type="submit" value="Register">
+    </form>
+</body>
+</html>

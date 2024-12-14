@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Frontend</title>
+    <link rel="stylesheet" href="/static/main.css">
+</head>
+<body>
+    <h1>Welcome to a New World with Frontend</h1>
+    <div id="app"></div>
+    <div>
+        <h2 style="color: red;">Hello I am Jeeban. This is !My 1st Page</h2>
+        <p id="count">1</p>
+        <br>
+        <button id="btn">Click Me</button>
+        <button id="btn1">Click Me</button>
+    </div>
+    <script src="/static/main.js"></script>
+    <script>
+        const btn = document.querySelector('#btn');
+        const btn1 = document.querySelector('#btn1');
+        const count = document.querySelector("#count");
+        var c = 1
+        btn.addEventListener('click',()=>{
+            c++;
+            count.innerHTML = c;
+        })
+        btn1.addEventListener('click',()=>{
+            if(c>0){
+                c--;
+            }
+            count.innerHTML = c;
+        })
+    </script>
+</body>
+</html>
