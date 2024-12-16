@@ -29,7 +29,7 @@ def download_instagram_video(url):
         # Download the post
         post = instaloader.Post.from_shortcode(loader.context, shortcode)
         loader.download_post(post, target=".")
-
+        
         # Move the video file to the Downloads folder
         for file in os.listdir(temp_folder):
             if file.endswith(".mp4"):
