@@ -1,11 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+
 <body>
-  
+  <form>
+    <input type="text" id="email" placeholder="Enter Email" name="email"> <br>
+    <input type="text" id="password" placeholder="Enter Password" name="password"> <br>
+    <button onclick="login(event)">LogIn</button>
+  </form>
+
+  <script>
+
+    function login(e) {
+      e.preventDefault()
+      email = document.querySelector("#email").value.trim();
+      password = document.querySelector("#password").value.trim();
+      fetch('http://127.0.0.1:5000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'Application/json',
+        },
+        body: JSON.stringify({ email, password })
+      }).then(res => res.json())
+      .then(data => console.log(data))
+    }
+  </script>
 </body>
+
 </html>

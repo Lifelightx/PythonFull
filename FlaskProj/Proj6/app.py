@@ -18,7 +18,16 @@ def signup():
     if request.method == 'POST':
         print("Exucuted")
         data = request.get_json()
+        if not data:
+            return jsonify({'success':False,'message':'No data provided'}), 400
         email = data.get('email')
+        try:
+             cursor.execute("select * from websites where email = %s",(email,))
+             existUser = cursor.fetchone()
+             if existUser:
+                return jsonify({"success":False,"message":"User Exists"})  
+        except Exception as e:
+            print("Error", e)
         password = data.get('password')
         hashpassword = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         try:
