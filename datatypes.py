@@ -166,3 +166,6 @@ newstr = str.upper()
 print(newstr)
 for i in str:
     print(i)
+    
+    
+    
