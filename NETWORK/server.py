@@ -2,10 +2,10 @@ import socket
 
 import time as t
 
-host = "http://127.0.0.1"
+host = "localhost"
 port  = 5000
 
-s = socket.socket()
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 s.bind((host,port))
 s.listen(1)
