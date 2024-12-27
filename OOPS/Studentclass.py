@@ -15,3 +15,5 @@ s1.age = 12
 s1.grade = "A"
 
 s1.showDetails()
+
+
