@@ -1,5 +1,6 @@
 my_dict = {"rama":"1st Jan", "sita":"24th Feb", "Laxman":"12th March"}
 
+my_dict.update()
 print(my_dict.keys())
 print(my_dict.values())
 
@@ -13,3 +14,5 @@ for i in my_dict.keys():
     
 for i,k in my_dict.items():
     print(i,k)
+    
+
