@@ -10,3 +10,11 @@ for i in range(lenth):
             lst[j] = temp
 
 print(lst)
+
+arr = [2,5,9,3,7]
+for i in range(len(arr)):
+    for j in range(len(arr)-1):
+        if arr[j]>arr[j+1]:
+            arr[j],arr[j+1] = arr[j+1],arr[j]
+            
+print(arr)
