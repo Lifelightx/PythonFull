@@ -24,6 +24,11 @@ else:
     arr.pop()    
     print(arr)
 
-
-    
+#deleting an element using pos
+arrr = [1,2,4,5,3,7]
+pos = int(input("Enter position: "))
+for i in range(pos,len(arrr)-1):
+    arrr[i] = arrr[i+1]
+arrr.pop()
+print(arrr)
     
