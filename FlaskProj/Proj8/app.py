@@ -39,7 +39,7 @@ def home():
     </form>"""
     return html_temp
 
-@app.route('/add', methods=['POST'])
+@app.route('/add',methods=["POST"])
 def add():
     id = int(request.form['id'])
     name = request.form['name']

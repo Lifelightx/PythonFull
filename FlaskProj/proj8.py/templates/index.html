@@ -1,0 +1,103 @@
+<html>
+    <head>
+        <title>Flask App</title>
+    </head>
+    <style>
+        *{
+            font-family: poppins;
+        }
+        table{
+            margin-left: 60px;
+            border: 1px solid red;
+            width: 80vw;
+            
+        }
+        th{
+            background: yellow;
+        }
+        td,th{
+            padding: 2px 20px;
+            border: 1px solid blue;
+            font-family: calibri;
+        }
+        #fom{
+            margin-top: 10px;
+            margin-left: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content:space-between;
+            align-items: center;
+            width: 500px;
+        }
+        #fom div{
+            
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        div input{
+            margin-top: 4px;
+        }
+        input{
+            padding: 5px 30px;
+            outline: none;
+            border: 2px solid rgb(55, 55, 0);
+            border-radius: 5px;
+            font-family: poppins;
+        }
+        #btn{
+            background: rgb(20, 177, 73);
+            color: white;
+            border: none;
+            outline: none;
+            padding: 9px 12px;
+            cursor: pointer;
+            margin-left: 200px;
+            margin-top: 10px;
+        }
+    </style>
+    <body>
+        <h1>Flask App</h1>
+        <p>Click the button to get the current time.</p>
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Salary</th>
+                <th>department</th>
+            </tr>
+            {%for row in rows %}
+                <tr>
+                    <td>{{row[0]}}</td>
+                    <td>{{row[1]}}</td>
+                    <td>{{row[2]}}</td>
+                    <td>{{row[3]}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <h1>Add New Employee Employee </h1>
+        <form id="fom" action="add" method="POST">
+            <div>
+                <label for="Id">Enter Employee Id </label>
+                <input type="text" name="id">
+            </div>
+            <div>
+                <label for="name">Enter Employee name</label>
+                <input type="text" name="name">
+            </div>
+            <div>
+                <label for="salary">Enter Salary of Employee</label>
+                <input type="text" name="salary">
+            </div>
+            <div>
+                <label for="department">Enter Department</label>
+                <input type="text" name="department">
+            </div>
+            <div>
+                <input id="btn" type="submit" value="Add Emplyoee">
+            </div>
+        </form>
+
+    </body>
+</html>
