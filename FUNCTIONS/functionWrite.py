@@ -27,3 +27,11 @@ def calculate(a,b):
 
 for i in calculate(10,5):
     print(i)
+    
+def myFunc(num1, num2):
+    return num1+num2, num1*num2
+
+add,sub = myFunc(20,10)
+print(add)
+print(sub)
+
