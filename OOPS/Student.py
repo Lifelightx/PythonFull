@@ -11,11 +11,11 @@ class Student:
     
     
 
-s1 = Student('Jeeban',[89,87,67])
+s1 = Student('Jeeban', [89,87,67])
 x = s1.avgMarks()
 print(x)
 print(s1.collegeName)
 
-s2 = Student('Pooja',[67,89,76])
+s2 = Student('Pooja', [67,89,76])
 print(s2.avgMarks())
 print(s2.collegeName)
