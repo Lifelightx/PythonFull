@@ -14,3 +14,8 @@ for i in range(rows):
         print("*", end="")
     print()
     
+    
+b = 10
+
+b + 1
+print(b)
