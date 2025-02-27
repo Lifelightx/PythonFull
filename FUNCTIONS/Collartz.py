@@ -5,8 +5,11 @@ def collatz(num):
         return num*3 +1
     
 while True:
-    num = int(input("Enter number: "))
-    if num == 1:
-        break
-    else:
-        print(collatz(num))
+    try:
+        num = int(input("Enter number: "))
+        if num == 1:
+            break
+        else:
+            print(collatz(num))
+    except Exception as e:
+        print(e)
