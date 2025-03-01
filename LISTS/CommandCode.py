@@ -6,3 +6,4 @@ def commandCode(lst):
     print(str)
 
 commandCode(["Hello", "Jeeban", "How are", "You"])
+
