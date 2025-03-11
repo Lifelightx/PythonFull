@@ -10,3 +10,15 @@ for i in range(len(lst)):
                 dup_list.append(lst[i])
                 
 print(dup_list)
+
+
+seen = set()
+duplicates = set()
+
+for i in lst:
+    if i in seen:
+        duplicates.add(i)
+    else:
+        seen.add(i)
+
+print(list(duplicates))
