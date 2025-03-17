@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Racer 🚗💨</title>
+    <style>
+        /* All the existing styles remain exactly the same */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #222;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+        
+        #game-container {
+            position: relative;
+            width: 400px;
+            height: 600px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            background-color: #111;
+        }
+        
+        #road {
+            position: absolute;
+            width: 100%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                0deg,
+                #333 0px,
+                #333 50px,
+                #444 50px,
+                #444 100px
+            );
+            animation: moveRoad 1s linear infinite;
+        }
+        
+        #grass-left, #grass-right {
+            position: absolute;
+            width: 80px;
+            height: 600px;
+            background-color: #2a2;
+            top: 0;
+        }
+        
+        #grass-left {
+            left: 0;
+        }
+        
+        #grass-right {
+            right: 0;
+        }
+        
+        .player {
+            position: absolute;
+            width: 40px;
+            height: 70px;
+            background-color: #f00;
+            bottom: 70px;
+            left: 180px;
+            z-index: 10;
+            transition: left 0.1s ease-out;
+            border-radius: 8px;
+        }
+        
+        .player::after {
+            content: '';
+            position: absolute;
+            width: 36px;
+            height: 10px;
+            background-color: #fff;
+            top: 15px;
+            left: 2px;
+        }
+        
+        .player::before {
+            content: '';
+            position: absolute;
+            width: 36px;
+            height: 10px;
+            background-color: #fff;
+            bottom: 15px;
+            left: 2px;
+        }
+        
+        .obstacle {
+            position: absolute;
+            width: 40px;
+            height: 70px;
+            background-color: #00f;
+            z-index: 5;
+            border-radius: 8px;
+        }
+        
+        .obstacle::after {
+            content: '';
+            position: absolute;
+            width: 36px;
+            height: 10px;
+            background-color: #fff;
+            top: 15px;
+            left: 2px;
+        }
+        
+        .obstacle::before {
+            content: '';
+            position: absolute;
+            width: 36px;
+            height: 10px;
+            background-color: #fff;
+            bottom: 15px;
+            left: 2px;
+        }
+
+        .cone {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 40px solid #ff5500;
+            z-index: 5;
+        }
+
+        .cone::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 8px;
+            background-color: #fff;
+            bottom: -8px;
+            left: -10px;
+            border-radius: 2px;
+        }
+
+        .barrier {
+            position: absolute;
+            width: 80px;
+            height: 20px;
+            background-color: #ff0;
+            z-index: 5;
+        }
+
+        .barrier::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 10px;
+            background-color: #f00;
+            top: 5px;
+            left: 5px;
+            background: repeating-linear-gradient(
+                45deg,
+                #f00,
+                #f00 10px,
+                #ff0 10px,
+                #ff0 20px
+            );
+        }
+        
+        #score-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #fff;
+            font-size: 16px;
+            z-index: 20;
+        }
+        
+        #game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 30;
+        }
+        
+        #game-over h2 {
+            color: #f00;
+            margin-bottom: 20px;
+            font-size: 36px;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+        }
+        
+        #game-over p {
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        
+        #restart-btn {
+            padding: 10px 20px;
+            background-color: #f00;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: transform 0.2s;
+        }
+        
+        #restart-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        #start-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 30;
+        }
+        
+        #start-screen h1 {
+            color: #f00;
+            margin-bottom: 20px;
+            font-size: 36px;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+        }
+        
+        #start-screen p {
+            margin-bottom: 10px;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        #start-btn {
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #f00;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: transform 0.2s;
+        }
+        
+        #start-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        @keyframes moveRoad {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="road"></div>
+        <div id="grass-left"></div>
+        <div id="grass-right"></div>
+        <div class="player"></div>
+        <div id="score-container">Score: <span id="score">0</span></div>
+        
+        <div id="start-screen">
+            <h1>PIXEL RACER 🏎️</h1>
+            <p>Use <strong>Left Arrow (⬅️)</strong> to move left</p>
+            <p>Use <strong>Right Arrow (➡️)</strong> to move right</p>
+            <p>Avoid obstacles and survive as long as possible!</p>
+            <button id="start-btn">START RACE</button>
+        </div>
+        
+        <div id="game-over">
+            <h2>GAME OVER</h2>
+            <p>Your Score: <span id="final-score">0</span></p>
+            <button id="restart-btn">RACE AGAIN</button>
+        </div>
+    </div>
+
+    <script>
+        // Game variables
+        let player;
+        let road;
+        let gameContainer;
+        let scoreElement;
+        let finalScoreElement;
+        let gameOverScreen;
+        let startScreen;
+        let score = 0;
+        let gameSpeed = 2;
+        let gameSpeedIncrement = 0.05;
+        let obstacleSpawnRate = 1500;
+        let minObstacleSpawnRate = 500;
+        let obstacleSpawnRateDecrement = 10;
+        let isGameRunning = false;
+        let gameLoopInterval;
+        let obstacleInterval;
+        
+        const lanePositions = [100, 180, 260]; // Left, Center, Right
+        const obstacleTypes = ['car', 'cone', 'barrier'];
+        const obstacles = [];
+
+        // Initialize the game when the window loads
+        window.onload = function() {
+            init();
+        };
+
+        // Initialize the game
+        function init() {
+            player = document.querySelector('.player');
+            road = document.getElementById('road');
+            gameContainer = document.getElementById('game-container');
+            scoreElement = document.getElementById('score');
+            finalScoreElement = document.getElementById('final-score');
+            gameOverScreen = document.getElementById('game-over');
+            startScreen = document.getElementById('start-screen');
+            
+            // Add event listeners
+            document.addEventListener('keydown', handleKeyPress);
+            document.getElementById('restart-btn').addEventListener('click', restartGame);
+            document.getElementById('start-btn').addEventListener('click', startGame);
+            
+            // Touch controls for mobile
+            gameContainer.addEventListener('touchstart', handleTouchStart);
+            gameContainer.addEventListener('touchmove', handleTouchMove);
+            
+            // Set player in center lane
+            player.style.left = lanePositions[1] + 'px';
+        }
+
+        // Variables for touch controls
+        let xDown = null;
+
+        function handleTouchStart(evt) {
+            xDown = evt.touches[0].clientX;
+        }
+
+        function handleTouchMove(evt) {
+            if (!xDown || !isGameRunning) return;
+            
+            const xUp = evt.touches[0].clientX;
+            const xDiff = xDown - xUp;
+            
+            // Determine swipe direction and move player
+            if (xDiff > 30) { // Threshold for swipe
+                movePlayer('right');
+            } else if (xDiff < -30) {
+                movePlayer('left');
+            }
+            
+            xDown = null; // Reset for next touch
+        }
+
+        // Handle keyboard input
+        function handleKeyPress(e) {
+            if (!isGameRunning) return;
+            
+            if (e.key === 'ArrowLeft') {
+                movePlayer('left');
+            } else if (e.key === 'ArrowRight') {
+                movePlayer('right');
+            }
+        }
+        
+        // Move the player left or right
+        function movePlayer(direction) {
+            const currentLane = lanePositions.indexOf(parseInt(player.style.left));
+            
+            if (direction === 'left' && currentLane > 0) {
+                player.style.left = lanePositions[currentLane - 1] + 'px';
+            } else if (direction === 'right' && currentLane < lanePositions.length - 1) {
+                player.style.left = lanePositions[currentLane + 1] + 'px';
+            }
+        }
+        
+        // Start the game
+        function startGame() {
+            startScreen.style.display = 'none';
+            isGameRunning = true;
+            score = 0;
+            gameSpeed = 2;
+            obstacleSpawnRate = 1500;
+            
+            // Update score
+            scoreElement.textContent = score;
+            
+            // Start game loop
+            gameLoopInterval = setInterval(gameLoop, 20);
+            
+            // Start spawning obstacles
+            obstacleInterval = setInterval(spawnObstacle, obstacleSpawnRate);
+            
+            // Adjust road animation speed
+            road.style.animation = `moveRoad ${1 / gameSpeed}s linear infinite`;
+        }
+
+        // Game over function
+        function gameOver() {
+            isGameRunning = false;
+            clearInterval(gameLoopInterval);
+            clearInterval(obstacleInterval);
+            
+            // Update final score
+            finalScoreElement.textContent = score;
+            
+            // Show game over screen
+            gameOverScreen.style.display = 'flex';
+        }
+
+        // Restart game
+        function restartGame() {
+            // Clear all obstacles
+            obstacles.forEach(obstacle => {
+                gameContainer.removeChild(obstacle.element);
+            });
+            obstacles.length = 0;
+            
+            // Reset game over screen
+            gameOverScreen.style.display = 'none';
+            
+            // Start new game
+            startGame();
+        }
+        
+        // Game loop
+        function gameLoop() {
+            // Update score
+            score++;
+            scoreElement.textContent = score;
+            
+            // Increase game speed gradually
+            if (score % 200 === 0) {
+                gameSpeed += gameSpeedIncrement;
+                road.style.animation = `moveRoad ${1 / gameSpeed}s linear infinite`;
+                
+                // Speed up obstacle spawn rate
+                if (obstacleSpawnRate > minObstacleSpawnRate) {
+                    obstacleSpawnRate -= obstacleSpawnRateDecrement;
+                    clearInterval(obstacleInterval);
+                    obstacleInterval = setInterval(spawnObstacle, obstacleSpawnRate);
+                }
+            }
+            
+            // Move obstacles
+            moveObstacles();
+            
+            // Check for collisions
+            checkCollisions();
+        }
+        
+        // Spawn a new obstacle
+        function spawnObstacle() {
+            if (!isGameRunning) return;
+            
+            const laneIndex = Math.floor(Math.random() * lanePositions.length);
+            const obstacleType = obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
+            
+            const obstacle = document.createElement('div');
+            
+            if (obstacleType === 'car') {
+                obstacle.className = 'obstacle';
+            } else if (obstacleType === 'cone') {
+                obstacle.className = 'cone';
+            } else if (obstacleType === 'barrier') {
+                obstacle.className = 'barrier';
+            }
+            
+            obstacle.style.left = lanePositions[laneIndex] + 'px';
+            obstacle.style.top = '-100px';
+            
+            gameContainer.appendChild(obstacle);
+            obstacles.push({
+                element: obstacle,
+                type: obstacleType,
+                lane: laneIndex
+            });
+        }
+        
+        // Move obstacles downwards
+        function moveObstacles() {
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                const obstacle = obstacles[i];
+                const currentTop = parseInt(obstacle.element.style.top) || -100;
+                
+                obstacle.element.style.top = (currentTop + gameSpeed) + 'px';
+                
+                // Remove obstacles that are out of view
+                if (currentTop > 600) {
+                    gameContainer.removeChild(obstacle.element);
+                    obstacles.splice(i, 1);
+                }
+            }
+        }
+        
+        // Check for collisions between player and obstacles
+        function checkCollisions() {
+            const playerRect = player.getBoundingClientRect();
+            
+            for (let i = 0; i < obstacles.length; i++) {
+                const obstacleRect = obstacles[i].element.getBoundingClientRect();
+                
+                if (
+                    playerRect.left < obstacleRect.right &&
+                    playerRect.right > obstacleRect.left &&
+                    playerRect.top < obstacleRect.bottom &&
+                    playerRect.bottom > obstacleRect.top
+                ) {
+                    gameOver();
+                }
+            }
+        }
